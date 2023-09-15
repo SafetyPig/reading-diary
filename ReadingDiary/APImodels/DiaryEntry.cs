@@ -8,14 +8,19 @@
         public BookLite? Book {  get; set; }
 
         /// <summary>
+        /// Author of the book
+        /// </summary>
+        public string? Author { get; set; }
+
+        /// <summary>
         /// When reading started
         /// </summary>
-        public DateTime? StartDate { get; set; }   
+        public DateOnly StartDate { get; set; }   
 
         /// <summary>
         /// When reading end
         /// </summary>
-        public DateTime? EndDate { get; set;}
+        public DateOnly EndDate { get; set;}
 
         /// <summary>
         /// Written revies
