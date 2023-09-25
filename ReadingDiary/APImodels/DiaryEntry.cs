@@ -3,6 +3,11 @@
     public class DiaryEntry
     {
         /// <summary>
+        /// ID of the entry
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// Name of the book
         /// </summary>
         public BookLite? Book {  get; set; }

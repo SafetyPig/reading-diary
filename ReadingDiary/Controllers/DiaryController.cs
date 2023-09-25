@@ -42,6 +42,7 @@ namespace ReadingDiary.Controllers
             {
                 new DiaryEntry
                 {
+                    Id = 1,
                     Book = new BookLite
                     {
                         BookId = 1,
@@ -57,6 +58,7 @@ namespace ReadingDiary.Controllers
                 },
                 new DiaryEntry
                 {
+                    Id = 2,
                     Book = new BookLite
                     {
                         BookId = 2,
@@ -72,6 +74,7 @@ namespace ReadingDiary.Controllers
                 },
                 new DiaryEntry
                 {
+                    Id = 3,
                     Book = new BookLite
                     {
                         BookId = 3,
