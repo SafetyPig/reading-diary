@@ -1,6 +1,6 @@
 ﻿namespace ReadingDiary.APImodels
 {
-    public class BookLite
+    public class BookLiteDTO
     {
         /// <summary>
         /// Id

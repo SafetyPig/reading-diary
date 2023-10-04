@@ -1,16 +1,16 @@
 ﻿namespace ReadingDiary.APImodels
 {
-    public class Author
+    public class DiaryDTO
     {
         /// <summary>
-        /// ID of the author
+        /// The Id
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Name of the author
+        /// Entries in the diary
         /// </summary>
-        public string? Name { get; set; }
+        public List<DiaryEntryDTO>? DiaryEntries { get; set; }
 
     }
 }

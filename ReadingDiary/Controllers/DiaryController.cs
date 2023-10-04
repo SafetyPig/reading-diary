@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
 using ReadingDiary.APImodels;
+using ReadingDiary.DB.Repositories;
+using ReadingDiary.DB.RepositoryInterfaces;
 
 namespace ReadingDiary.Controllers
 {
@@ -13,10 +15,12 @@ namespace ReadingDiary.Controllers
     {
 
         private readonly ILogger<DiaryController> _logger;
+        private readonly IDiaryRepository _repository;
 
-        public DiaryController(ILogger<DiaryController> logger)
+        public DiaryController(ILogger<DiaryController> logger, IDiaryRepository repository)
         {
             _logger = logger;
+            _repository = repository;
         }
 
         /// <summary>
@@ -24,9 +28,10 @@ namespace ReadingDiary.Controllers
         /// </summary>
         /// <returns>Asked diary</returns>
         [HttpGet(Name = "GetDiary")]
-        public IEnumerable<Diary> Get()
+        public async Task<ActionResult<DiaryDTO>> Get(int id)
         {
-            return new List<Diary>();
+            var diary = await _repository.GetByIdAsync(id);
+            return Ok(diary);
         }
 
         /// <summary>
@@ -35,15 +40,15 @@ namespace ReadingDiary.Controllers
         /// <returns>Mock diary to be used for testing and developin</returns>
         [Route("[action]", Name = "GetMockDiary")]
         [HttpGet]
-        public List<DiaryEntry> GetMock()
+        public List<DiaryEntryDTO> GetMock()
         {
             _logger.LogInformation("Someone called mock function to get diary");
-            return new List<DiaryEntry>
+            return new List<DiaryEntryDTO>
             {
-                new DiaryEntry
+                new DiaryEntryDTO
                 {
                     Id = 1,
-                    Book = new BookLite
+                    Book = new BookLiteDTO
                     {
                         BookId = 1,
                         Name = "Lord of the Rings: Two Towers"
@@ -56,10 +61,10 @@ namespace ReadingDiary.Controllers
                     Review = "Good fantasy. Interesting world. Nice characters."
 
                 },
-                new DiaryEntry
+                new DiaryEntryDTO
                 {
                     Id = 2,
-                    Book = new BookLite
+                    Book = new BookLiteDTO
                     {
                         BookId = 2,
                         Name = "Kuolleet ja elävät"
@@ -72,10 +77,10 @@ namespace ReadingDiary.Controllers
                     Review = "Mielenkiintoinen kirja. Hauskasti rakennettu. Tyly tarina"
 
                 },
-                new DiaryEntry
+                new DiaryEntryDTO
                 {
                     Id = 3,
-                    Book = new BookLite
+                    Book = new BookLiteDTO
                     {
                         BookId = 3,
                         Name = "Story of his life"

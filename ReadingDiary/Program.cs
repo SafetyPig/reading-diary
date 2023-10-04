@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
+using ReadingDiary.DB;
+using Microsoft.EntityFrameworkCore;
+using ReadingDiary.DB.RepositoryInterfaces;
+using ReadingDiary.DB.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +31,12 @@ builder.Services.AddCors(options =>
                       });
 });
 
+
+builder.Services.AddDbContext<ReadingDiaryContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ReadingDiary")));
+
+
+builder.Services.AddScoped<IDiaryRepository, DiaryRepository>();
 
 var app = builder.Build();
 

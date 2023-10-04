@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadingDiary", "ReadingDiary\ReadingDiary.csproj", "{039DE937-089A-46FC-883A-9E4394B60495}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadingDiary", "ReadingDiary\ReadingDiary.csproj", "{039DE937-089A-46FC-883A-9E4394B60495}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadingDiary.DB", "ReadingDiary.DB\ReadingDiary.DB.csproj", "{BC1AA5DD-9855-4101-9AD6-EDEB26687803}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{039DE937-089A-46FC-883A-9E4394B60495}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{039DE937-089A-46FC-883A-9E4394B60495}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{039DE937-089A-46FC-883A-9E4394B60495}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC1AA5DD-9855-4101-9AD6-EDEB26687803}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC1AA5DD-9855-4101-9AD6-EDEB26687803}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC1AA5DD-9855-4101-9AD6-EDEB26687803}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC1AA5DD-9855-4101-9AD6-EDEB26687803}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

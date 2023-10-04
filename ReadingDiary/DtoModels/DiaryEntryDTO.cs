@@ -1,6 +1,6 @@
 ﻿namespace ReadingDiary.APImodels
 {
-    public class DiaryEntry
+    public class DiaryEntryDTO
     {
         /// <summary>
         /// ID of the entry
@@ -10,7 +10,7 @@
         /// <summary>
         /// Name of the book
         /// </summary>
-        public BookLite? Book {  get; set; }
+        public BookLiteDTO? Book {  get; set; }
 
         /// <summary>
         /// Author of the book
