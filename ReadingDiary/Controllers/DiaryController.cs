@@ -7,12 +7,13 @@ using ReadingDiary.DB.RepositoryInterfaces;
 
 namespace ReadingDiary.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
-    //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+    [RequiredScope(scopeRequiredByAPI)]
     public class DiaryController : ControllerBase
     {
+        const string scopeRequiredByAPI = "reading-diary.read";
 
         private readonly ILogger<DiaryController> _logger;
         private readonly IDiaryRepository _repository;

@@ -5,12 +5,19 @@ using ReadingDiary.DB;
 using Microsoft.EntityFrameworkCore;
 using ReadingDiary.DB.RepositoryInterfaces;
 using ReadingDiary.DB.Repositories;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+
+// Adds Microsoft Identity platform (AAD v2.0) support to protect this Api
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+    .AddMicrosoftIdentityWebApi(options =>
+    {
+        builder.Configuration.Bind("AzureAdB2C", options);
+    },
+    options => { builder.Configuration.Bind("AzureAdB2C", options); });
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -21,16 +28,16 @@ var allowedOrigins = "allowedOrigins";
 
 var hosts = builder.Configuration["AllowedHosts"] ?? "";
 
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: allowedOrigins,
                       policy =>
                       {
                           policy.WithOrigins(hosts);
+                          policy.WithHeaders("Authorization");
+                          policy.AllowAnyMethod();
                       });
 });
-
 
 builder.Services.AddDbContext<ReadingDiaryContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ReadingDiary")));
@@ -48,6 +55,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
