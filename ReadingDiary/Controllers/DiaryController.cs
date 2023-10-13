@@ -9,10 +9,10 @@ using ReadingDiary.DB.RepositoryInterfaces;
 
 namespace ReadingDiary.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("[controller]")]
-    [RequiredScope(scopeRequiredByAPI)]
+    //[RequiredScope(scopeRequiredByAPI)]
     public class DiaryController : ControllerBase
     {
         const string scopeRequiredByAPI = "reading-diary.read";
@@ -111,10 +111,10 @@ namespace ReadingDiary.Controllers
         /// Adds diary entry
         /// </summary>
         /// <returns>Added diary entry</returns>
-        [Route("[action]", Name = "AddDiaryEntry")]
+        [Route("[action]", Name = "AddOrUpdateDiaryEntry")]
         [HttpPost]
-        public async Task<ActionResult<DiaryDTO>> AddDiaryEntry(DiaryEntryDTO newEntry)
-        {          
+        public async Task<ActionResult<DiaryDTO>> AddOrUpdateDiaryEntry([FromBody] DiaryEntryDTO newEntry)
+        {
             if (newEntry == null)
             {
                 return BadRequest();
@@ -136,7 +136,16 @@ namespace ReadingDiary.Controllers
             }            
 
             var databaseModel = _mapper.Map<DiaryEntry>(newEntry);
-            var diary = await _repository.AddDiaryEntryAsync(databaseModel);
+
+            DiaryEntry diary;
+            if (databaseModel.Id == -1)
+            {
+                diary = await _repository.AddDiaryEntryAsync(databaseModel);
+            } else
+            {
+                diary = await _repository.UpdateDiaryEntryAsync(databaseModel);
+            }
+            
             return Ok(diary);
         }
     }

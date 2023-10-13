@@ -3,7 +3,7 @@ using ReadingDiary.DB.RepositoryInterfaces;
 
 namespace ReadingDiary.DB.Repositories
 {
-    internal class BookRepository : IBookRepository
+    public class BookRepository : IBookRepository
     {
         private readonly ReadingDiaryContext _context;
 

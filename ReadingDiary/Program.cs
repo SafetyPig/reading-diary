@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using ReadingDiary.DB.RepositoryInterfaces;
 using ReadingDiary.DB.Repositories;
 using System.IdentityModel.Tokens.Jwt;
+using AutoMapper;
+using Microsoft.IdentityModel.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,16 +36,21 @@ builder.Services.AddCors(options =>
                       policy =>
                       {
                           policy.WithOrigins(hosts);
-                          policy.WithHeaders("Authorization");
+                          policy.WithHeaders("Authorization", "Content-Type");
                           policy.AllowAnyMethod();
                       });
 });
 
 builder.Services.AddDbContext<ReadingDiaryContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ReadingDiary")));
-
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ReadingDiary"))
+    .EnableSensitiveDataLogging(true)
+    .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole())));
 
 builder.Services.AddScoped<IDiaryRepository, DiaryRepository>();
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 
