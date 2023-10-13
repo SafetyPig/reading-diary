@@ -13,6 +13,12 @@ namespace ReadingDiary.DB.Repositories
             _context = context;
         }
 
+        public async Task<DiaryEntry> AddDiaryEntryAsync(DiaryEntry diaryEntry)
+        {
+            await _context.DiaryEntries.AddAsync(diaryEntry);
+            return diaryEntry;
+        }
+
         public async Task<Diary?> GetByIdAsync(int diaryId)
         {
             return await _context.Diaries.SingleOrDefaultAsync(d => d.Id == diaryId);

@@ -11,5 +11,15 @@
         /// Name
         /// </summary>
         public string? Name { get; set; }
+
+        /// <summary>
+        /// Id
+        /// </summary>
+        public int AuthorId { get; set; }
+
+        /// <summary>
+        /// Author of the book
+        /// </summary>
+        public string? AuthorName { get; set; }
     }
 }

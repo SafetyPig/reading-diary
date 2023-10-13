@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
 using ReadingDiary.APImodels;
+using ReadingDiary.DB.Models;
 using ReadingDiary.DB.Repositories;
 using ReadingDiary.DB.RepositoryInterfaces;
 
@@ -17,11 +19,17 @@ namespace ReadingDiary.Controllers
 
         private readonly ILogger<DiaryController> _logger;
         private readonly IDiaryRepository _repository;
+        private readonly IAuthorRepository _authorRepository;
+        private readonly IBookRepository _bookRepository;
+        private readonly IMapper _mapper;
 
-        public DiaryController(ILogger<DiaryController> logger, IDiaryRepository repository)
+        public DiaryController(ILogger<DiaryController> logger, IDiaryRepository repository, IAuthorRepository authorRepository, IBookRepository bookRepository, IMapper mapper)
         {
             _logger = logger;
             _repository = repository;
+            _authorRepository = authorRepository;
+            _bookRepository = bookRepository;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -52,9 +60,10 @@ namespace ReadingDiary.Controllers
                     Book = new BookLiteDTO
                     {
                         BookId = 1,
-                        Name = "Lord of the Rings: Two Towers"
-                    },
-                    Author = "J.R.R. Tolkien",
+                        Name = "Lord of the Rings: Two Towers",
+                        AuthorId = 1,
+                        AuthorName = "J.R.R. Tolkien"
+                    },                    
                     StartDate = new DateOnly(2023,6,6),
                     EndDate = new DateOnly(2023,6,16),
                     Finished = true,
@@ -68,9 +77,10 @@ namespace ReadingDiary.Controllers
                     Book = new BookLiteDTO
                     {
                         BookId = 2,
-                        Name = "Kuolleet ja elävät"
+                        Name = "Kuolleet ja elävät",
+                        AuthorId = 2,
+                        AuthorName = "Hannu Mäkelä"
                     },
-                    Author = "Hannu Mäkelä",
                     StartDate = new DateOnly(2023,5,1),
                     EndDate = new DateOnly(2023,5,12),
                     Finished = false,
@@ -84,9 +94,10 @@ namespace ReadingDiary.Controllers
                     Book = new BookLiteDTO
                     {
                         BookId = 3,
-                        Name = "Story of his life"
-                    },
-                    Author = "Other Dude",
+                        Name = "Story of his life",
+                        AuthorId = 3,
+                        AuthorName = "Other Dude"
+                    },                    
                     StartDate = new DateOnly(2023,7,2),
                     EndDate = new DateOnly(2023,7,3),
                     Finished = true,
@@ -94,6 +105,39 @@ namespace ReadingDiary.Controllers
                     Review = "Almost like story of my life!"
                 }
             };
+        }
+
+        /// <summary>
+        /// Adds diary entry
+        /// </summary>
+        /// <returns>Added diary entry</returns>
+        [Route("[action]", Name = "AddDiaryEntry")]
+        [HttpPost]
+        public async Task<ActionResult<DiaryDTO>> AddDiaryEntry(DiaryEntryDTO newEntry)
+        {          
+            if (newEntry == null)
+            {
+                return BadRequest();
+            }
+
+            if (newEntry.Book != null)
+            {
+                if (newEntry?.Book?.AuthorId == null && newEntry?.Book?.AuthorName != null)
+                {
+                    var authorId = await _authorRepository.AddAuthorAsync(newEntry.Book.AuthorName);
+                    newEntry.Book.AuthorId = authorId;
+                }
+
+                if (newEntry?.Book?.BookId == null)
+                {
+                    var bookId = await _bookRepository.AddBookAsync(newEntry!.Book.Name!, newEntry.Book.AuthorId);
+                    newEntry.Book.BookId = bookId;
+                }
+            }            
+
+            var databaseModel = _mapper.Map<DiaryEntry>(newEntry);
+            var diary = await _repository.AddDiaryEntryAsync(databaseModel);
+            return Ok(diary);
         }
     }
 }

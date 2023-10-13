@@ -5,5 +5,7 @@ namespace ReadingDiary.DB.RepositoryInterfaces
     public interface IDiaryRepository
     {
         Task<Diary?> GetByIdAsync(int diaryId);
+
+        Task<DiaryEntry> AddDiaryEntryAsync(DiaryEntry diaryEntry);
     }
 }

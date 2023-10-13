@@ -13,11 +13,6 @@
         public BookLiteDTO? Book {  get; set; }
 
         /// <summary>
-        /// Author of the book
-        /// </summary>
-        public string? Author { get; set; }
-
-        /// <summary>
         /// When reading started
         /// </summary>
         public DateOnly StartDate { get; set; }   

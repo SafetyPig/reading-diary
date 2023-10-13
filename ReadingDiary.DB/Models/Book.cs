@@ -16,10 +16,10 @@ namespace ReadingDiary.DB.Models
         public int Id { get; set; }
 
         /// <summary>
-        /// Authod ID FK
+        /// Author ID FK
         /// </summary>
         [ForeignKey("Author")]
-        public int AuthodId { get; set; }
+        public int AuthorId { get; set; }
 
         /// <summary>
         /// Title of the book

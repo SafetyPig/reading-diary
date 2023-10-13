@@ -8,6 +8,8 @@ namespace ReadingDiary.Mappings
         public MappingProfile()
         {
             CreateMap<Diary, DiaryDTO>().ReverseMap();
+
+            CreateMap<DiaryEntry, DiaryEntryDTO>().ReverseMap();
         }
     }
 }
