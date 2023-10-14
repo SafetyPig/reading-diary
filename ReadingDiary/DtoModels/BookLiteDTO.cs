@@ -8,9 +8,9 @@
         public int BookId { get; set; } 
 
         /// <summary>
-        /// Name
+        /// Title
         /// </summary>
-        public string? Name { get; set; }
+        public string? Title { get; set; }
 
         /// <summary>
         /// Id

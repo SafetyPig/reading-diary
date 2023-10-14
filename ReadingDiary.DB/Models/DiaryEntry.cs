@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ReadingDiary.DB.Models
-{    
+{
     public class DiaryEntry
     {
         /// <summary>
@@ -51,5 +51,21 @@ namespace ReadingDiary.DB.Models
         /// Did the reading finish the book
         /// </summary>
         public bool Finished { get; set; }
+
+        /// <summary>
+        /// Diary the entry belongs to
+        /// </summary>
+        [ForeignKey("Diary")]
+        public int DiaryId { get; set; }
+
+        /// <summary>
+        /// Navigation property for <see cref="Book"/>
+        /// </summary>
+        public virtual required Book Book { get; set; }
+
+        /// <summary>
+        /// Navigation property for <see cref="Author"/>
+        /// </summary>
+        public virtual required Author Author { get; set; }
     }
 }

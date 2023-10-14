@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web.Resource;
 using ReadingDiary.APImodels;
 using ReadingDiary.DB.Models;
@@ -40,7 +41,8 @@ namespace ReadingDiary.Controllers
         public async Task<ActionResult<DiaryDTO>> Get(int id)
         {
             var diary = await _repository.GetByIdAsync(id);
-            return Ok(diary);
+
+            return Ok(_mapper.Map<DiaryDTO>(diary));
         }
 
         /// <summary>
@@ -60,10 +62,10 @@ namespace ReadingDiary.Controllers
                     Book = new BookLiteDTO
                     {
                         BookId = 1,
-                        Name = "Lord of the Rings: Two Towers",
+                        Title = "Lord of the Rings: Two Towers",
                         AuthorId = 1,
                         AuthorName = "J.R.R. Tolkien"
-                    },                    
+                    },
                     StartDate = new DateOnly(2023,6,6),
                     EndDate = new DateOnly(2023,6,16),
                     Finished = true,
@@ -77,7 +79,7 @@ namespace ReadingDiary.Controllers
                     Book = new BookLiteDTO
                     {
                         BookId = 2,
-                        Name = "Kuolleet ja elävät",
+                        Title = "Kuolleet ja elävät",
                         AuthorId = 2,
                         AuthorName = "Hannu Mäkelä"
                     },
@@ -94,10 +96,10 @@ namespace ReadingDiary.Controllers
                     Book = new BookLiteDTO
                     {
                         BookId = 3,
-                        Name = "Story of his life",
+                        Title = "Story of his life",
                         AuthorId = 3,
                         AuthorName = "Other Dude"
-                    },                    
+                    },
                     StartDate = new DateOnly(2023,7,2),
                     EndDate = new DateOnly(2023,7,3),
                     Finished = true,
@@ -122,31 +124,44 @@ namespace ReadingDiary.Controllers
 
             if (newEntry.Book != null)
             {
-                if (newEntry?.Book?.AuthorId == null && newEntry?.Book?.AuthorName != null)
+                if (newEntry?.Book?.AuthorId == 0 && newEntry?.Book?.AuthorName != null)
                 {
-                    var authorId = await _authorRepository.AddAuthorAsync(newEntry.Book.AuthorName);
+                    var authorId = await _authorRepository.GetAuthorByNameAsync(newEntry.Book.AuthorName);
+
+                    if (authorId == 0)
+                    {
+                        authorId = await _authorRepository.AddAuthorAsync(newEntry.Book.AuthorName);
+                    }
+
                     newEntry.Book.AuthorId = authorId;
                 }
 
-                if (newEntry?.Book?.BookId == null)
+                if (newEntry?.Book?.BookId == 0 && newEntry.Book.Title != null)
                 {
-                    var bookId = await _bookRepository.AddBookAsync(newEntry!.Book.Name!, newEntry.Book.AuthorId);
+                    var bookId = await _bookRepository.GetBookByTitleAsync(newEntry.Book.Title);
+
+                    if (bookId == 0)
+                    {
+                        bookId = await _bookRepository.AddBookAsync(newEntry!.Book.Title!, newEntry.Book.AuthorId);
+                    }
+
                     newEntry.Book.BookId = bookId;
                 }
-            }            
-
-            var databaseModel = _mapper.Map<DiaryEntry>(newEntry);
-
-            DiaryEntry diary;
-            if (databaseModel.Id == -1)
-            {
-                diary = await _repository.AddDiaryEntryAsync(databaseModel);
-            } else
-            {
-                diary = await _repository.UpdateDiaryEntryAsync(databaseModel);
             }
-            
-            return Ok(diary);
+
+            var diaryEntry = _mapper.Map<DiaryEntry>(newEntry);
+            diaryEntry.DiaryId = 1;
+
+            if (diaryEntry.Id == 0)
+            {
+                await _repository.AddDiaryEntryAsync(diaryEntry);
+            }
+            else
+            {
+                await _repository.UpdateDiaryEntryAsync(diaryEntry);
+            }
+
+            return Ok(diaryEntry);
         }
     }
 }

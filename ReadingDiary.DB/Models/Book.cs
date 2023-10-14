@@ -25,7 +25,7 @@ namespace ReadingDiary.DB.Models
         /// Title of the book
         /// </summary>
         [MaxLength(1024)]
-        public string? Title { get; set; }
+        public required string Title { get; set; }
 
         /// <summary>
         /// In which entries the book is in

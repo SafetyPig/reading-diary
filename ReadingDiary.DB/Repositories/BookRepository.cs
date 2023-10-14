@@ -1,4 +1,5 @@
-﻿using ReadingDiary.DB.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using ReadingDiary.DB.Models;
 using ReadingDiary.DB.RepositoryInterfaces;
 
 namespace ReadingDiary.DB.Repositories
@@ -27,7 +28,21 @@ namespace ReadingDiary.DB.Repositories
 
             await _context.Books.AddAsync(newBook);
 
+            await _context.SaveChangesAsync();
+
             return newBook.Id;
+        }
+
+        public async Task<int> GetBookByTitleAsync(string title)
+        {
+            var book = await _context.Books.FirstOrDefaultAsync(x => x.Title.ToLower() == title.ToLower());
+
+            if (book == null)
+            {
+                return 0;
+            }
+
+            return book.Id;
         }
     }
 }

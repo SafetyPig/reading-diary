@@ -19,7 +19,7 @@ namespace ReadingDiary.DB.Models
         /// Name of the author
         /// </summary>
         [MaxLength(512)]
-        public string? Name { get; set; }
+        public required string Name { get; set; }
 
         /// <summary>
         /// Books written by the author

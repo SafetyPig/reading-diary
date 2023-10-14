@@ -16,6 +16,6 @@ namespace ReadingDiary.DB.Models
         /// <summary>
         /// Entries in the diary
         /// </summary>
-        public List<DiaryEntry>? DiaryEntries { get; set; }
+        public required List<DiaryEntry> DiaryEntries { get; set; }
     }
 }
