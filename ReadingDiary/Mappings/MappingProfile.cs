@@ -25,8 +25,7 @@ namespace ReadingDiary.Mappings
                AuthorId = src.AuthorId,
                AuthorName = src.Author.Name,
            }));
-
-            // Mapping from DiaryEntryDTO to DiaryEntry
+            
             CreateMap<DiaryEntryDTO, DiaryEntry>()
                 .ForMember(dest => dest.AuthorId, opt => opt.MapFrom(src => src.Book!.AuthorId))
                 .ForMember(dest => dest.BookId, opt => opt.MapFrom(src => src.Book!.BookId))

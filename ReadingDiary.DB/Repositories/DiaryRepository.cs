@@ -32,6 +32,14 @@ namespace ReadingDiary.DB.Repositories
                 .SingleOrDefaultAsync(d => d.Id == diaryId);
         }
 
+        public async Task<DiaryEntry> GetDiaryEntryByIdAsync(int diaryEntryId)
+        {
+            return await _context.DiaryEntries
+                .Include(de => de.Book)
+                .Include(de => de.Author)
+                .SingleAsync(de => de.Id == diaryEntryId);
+        }
+
         public async Task<DiaryEntry> UpdateDiaryEntryAsync(DiaryEntry diaryEntry)
         {            
             var existingEntry = await _context.DiaryEntries.FindAsync(diaryEntry.Id);

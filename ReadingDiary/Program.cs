@@ -14,12 +14,12 @@ var builder = WebApplication.CreateBuilder(args);
 JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
 // Adds Microsoft Identity platform (AAD v2.0) support to protect this Api
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApi(options =>
-    {
-        builder.Configuration.Bind("AzureAdB2C", options);
-    },
-    options => { builder.Configuration.Bind("AzureAdB2C", options); });
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//    .AddMicrosoftIdentityWebApi(options =>
+//    {
+//        builder.Configuration.Bind("AzureAdB2C", options);
+//    },
+//    options => { builder.Configuration.Bind("AzureAdB2C", options); });
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -6,6 +6,8 @@ namespace ReadingDiary.DB.RepositoryInterfaces
     {
         Task<Diary?> GetByIdAsync(int diaryId);
 
+        Task<DiaryEntry> GetDiaryEntryByIdAsync(int diaryEntryId);
+
         Task<DiaryEntry> AddDiaryEntryAsync(DiaryEntry diaryEntry);
 
         Task<DiaryEntry> UpdateDiaryEntryAsync(DiaryEntry diaryEntry);

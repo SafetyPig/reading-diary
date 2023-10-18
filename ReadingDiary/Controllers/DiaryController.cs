@@ -161,7 +161,11 @@ namespace ReadingDiary.Controllers
                 await _repository.UpdateDiaryEntryAsync(diaryEntry);
             }
 
-            return Ok(diaryEntry);
+
+
+            var updatedDiaryEntry = await _repository.GetDiaryEntryByIdAsync(diaryEntry.Id);
+            
+            return Ok(_mapper.Map<DiaryEntryDTO>(updatedDiaryEntry));
         }
     }
 }
