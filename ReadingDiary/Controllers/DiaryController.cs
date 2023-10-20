@@ -1,19 +1,17 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web.Resource;
 using ReadingDiary.APImodels;
 using ReadingDiary.DB.Models;
-using ReadingDiary.DB.Repositories;
 using ReadingDiary.DB.RepositoryInterfaces;
 
 namespace ReadingDiary.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
-    //[RequiredScope(scopeRequiredByAPI)]
+    [RequiredScope(scopeRequiredByAPI)]
     public class DiaryController : ControllerBase
     {
         const string scopeRequiredByAPI = "reading-diary.read";
